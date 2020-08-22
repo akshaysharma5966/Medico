@@ -7,6 +7,18 @@ const medicine = new Schema(
 			type: Number,
 			required: true,
 		},
+		drug_name: {
+			type: String,
+			required: true,
+		},
+		composition: {
+			type: String,
+			required: true,
+		},
+		manufacturer: {
+			type: String,
+			required: true,
+		},
 		price: {
 			type: Number,
 			required: true,
