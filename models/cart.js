@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const items = new Schema(
   {
     itemId: {
-      type: String,
+      type: Schema.ObjectId,
       required: true,
     },
     quantity: {
