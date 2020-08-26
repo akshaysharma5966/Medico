@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Cart = require("../models/cart");
 const Medicine = require("../models/medicine");
 const Diagnolotic = require("../models/diagnolotic");
+const Order = require("../models/order");
 
 exports.getCartItems = (req, res, next) => {
   Cart.findOne()
@@ -74,5 +75,44 @@ exports.removeItemFromCart = (req, res, next) => {
     .then((_) =>
       res.status(201).json({ message: "Item has been removed from cart." })
     )
+    .catch((err) => console.log(err));
+};
+
+exports.clearCart = (req, res, next) => {
+  const userId = req.query.userId;
+  Cart.findOneAndDelete({
+    userId: userId,
+  })
+    .then((_) => res.status(200).json({ message: "Cart has been cleared." }))
+    .catch((err) => console.log(err));
+};
+
+exports.checkout = (req, res, next) => {
+  const userId = req.query.userId;
+  const currDate = "orders." + Date.now();
+  Cart.findOne()
+    .where("userId")
+    .equals(userId)
+    .then((items) => {
+      if (items) {
+        console.log(items.cart);
+        Order.findOneAndUpdate(
+          {
+            userId: userId,
+          },
+          { $push: { [currDate]: items.cart } },
+          { upsert: true }
+        )
+          .then(async (_) => {
+            await this.clearCart(req, res, next);
+            res
+              .status(200)
+              .json({ message: "Order has been placed, Thank-You." });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        res.status(200).json({ message: "No items in cart to checkout." });
+      }
+    })
     .catch((err) => console.log(err));
 };

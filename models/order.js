@@ -9,9 +9,12 @@ const cart = new Schema(
       type: String,
       required: true,
     },
-    cart: [items],
+    orders: {
+      type: Map,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Cart", cart);
+module.exports = mongoose.model("Order", cart);
