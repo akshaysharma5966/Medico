@@ -94,7 +94,7 @@ exports.clearCart = (req, res, next) => {
 exports.checkout = (req, res, next) => {
   const userId = req.query.userId;
   const temp = Date.now();
-  const currDate = "orders." + temp;
+  const currDate = "items." + temp;
   Cart.findOne()
     .where("userId")
     .equals(userId)

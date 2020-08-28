@@ -17,7 +17,7 @@ const order = new Schema(
       type: String,
       required: true,
     },
-    orders: {
+    items: {
       type: Map,
       required: true,
     },

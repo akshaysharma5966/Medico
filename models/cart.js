@@ -1,7 +1,20 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const items = require("./cart_item");
+const items = new Schema({
+  itemId: {
+    type: Schema.ObjectId,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    default: 0,
+  },
+  itemType: {
+    type: String,
+    required: true,
+  },
+});
 
 const cart = new Schema(
   {
