@@ -1,9 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const items = require("./cart_item");
+const doctorOrder = new Schema(
+  {
+    doctorId: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
 
-const cart = new Schema(
+const order = new Schema(
   {
     userId: {
       type: String,
@@ -13,8 +21,9 @@ const cart = new Schema(
       type: Map,
       required: true,
     },
+    doctors: [doctorOrder],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Order", cart);
+module.exports = mongoose.model("Order", order);
