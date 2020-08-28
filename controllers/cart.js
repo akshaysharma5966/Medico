@@ -83,31 +83,35 @@ exports.clearCart = (req, res, next) => {
   Cart.findOneAndDelete({
     userId: userId,
   })
-    .then((_) => res.status(200).json({ message: "Cart has been cleared." }))
+    .then((_) => {
+      if (res) {
+        res.status(200).json({ message: "Cart has been cleared." });
+      }
+    })
     .catch((err) => console.log(err));
 };
 
 exports.checkout = (req, res, next) => {
   const userId = req.query.userId;
-  const currDate = "orders." + Date.now();
+  const temp = Date.now();
+  const currDate = "orders." + temp;
   Cart.findOne()
     .where("userId")
     .equals(userId)
     .then((items) => {
       if (items) {
-        console.log(items.cart);
         Order.findOneAndUpdate(
           {
             userId: userId,
           },
-          { $push: { [currDate]: items.cart } },
+          { $set: { [currDate]: { ...items.cart } } },
           { upsert: true }
         )
           .then(async (_) => {
-            await this.clearCart(req, res, next);
+            await this.clearCart(req, null, next);
             res
               .status(200)
-              .json({ message: "Order has been placed, Thank-You." });
+              .json({ message: "Order has been placed with id: \n" + temp });
           })
           .catch((err) => console.log(err));
       } else {
