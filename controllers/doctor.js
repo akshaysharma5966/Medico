@@ -20,13 +20,16 @@ exports.bookDoctor = (req, res, next) => {
             userId: req.query.userId,
           },
           { $push: { doctors: doctor._id } },
-          { upsert: true }
+          { upsert: true, new: true }
         )
-          .then((order) =>
-            res
-              .status(200)
-              .json({ message: "Order has been placed with id: \n" + temp })
-          )
+          .then((order) => {
+            console.log(order);
+            res.status(200).json({
+              message:
+                "Order has been placed with id: \n" +
+                order.doctors[order.doctors.length - 1]._id,
+            });
+          })
           .catch((err) => console.log(err));
       }
     })
