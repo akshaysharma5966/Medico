@@ -7,6 +7,10 @@ const doctorOrder = new Schema(
       type: String,
       required: true,
     },
+    bookedAt: {
+      type: Date,
+      required: true,
+    },
   },
   { timestamps: true }
 );
