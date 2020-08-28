@@ -111,7 +111,7 @@ exports.checkout = (req, res, next) => {
             await this.clearCart(req, null, next);
             res
               .status(200)
-              .json({ message: "Order has been placed with id: \n" + temp });
+              .json({ message: "Order has been placed with id:\n" + temp });
           })
           .catch((err) => console.log(err));
       } else {

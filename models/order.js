@@ -9,6 +9,7 @@ const doctorOrder = new Schema(
     },
     bookedAt: {
       type: Date,
+      set: (d) => new Date(d * 1000),
       required: true,
     },
   },
