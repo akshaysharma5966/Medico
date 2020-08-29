@@ -32,7 +32,7 @@ exports.bookDoctor = (req, res, next) => {
           .then((order) => {
             res.status(200).json({
               message:
-                "Doctor has been with id:\n" +
+                "Doctor has been booked with id:\n" +
                 order.doctors[order.doctors.length - 1]._id,
             });
           })
