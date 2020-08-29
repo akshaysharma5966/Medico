@@ -95,6 +95,8 @@ exports.checkout = (req, res, next) => {
   const userId = req.query.userId;
   const temp = Date.now();
   const currDate = "items." + temp;
+  const prescription = currDate + ".prescription";
+  console.log(req.file.path);
   Cart.findOne()
     .where("userId")
     .equals(userId)
@@ -104,7 +106,11 @@ exports.checkout = (req, res, next) => {
           {
             userId: userId,
           },
-          { $set: { [currDate]: { ...items.cart } } },
+          {
+            $set: {
+              [currDate]: { ...items.cart, prescription: req.file.path },
+            },
+          },
           { upsert: true }
         )
           .then(async (_) => {

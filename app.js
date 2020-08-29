@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const multer = require("multer");
 
 // routes
 const doctorRoutes = require("./routes/doctor");
@@ -9,7 +10,16 @@ const diagnoloticsRoutes = require("./routes/diagnolotic");
 const cartRoutes = require("./routes/cart");
 
 const app = express();
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + "-" + file.originalname);
+  },
+});
 
+app.use(multer({ storage: fileStorage }).single("image"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

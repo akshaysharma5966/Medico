@@ -1,1 +1,6 @@
+# Ignore Node modules
 node_modules
+
+# Igonore Images
+*.png
+*.jpg
