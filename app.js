@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const multer = require("multer");
 
 // routes
+const memberRoutes = require("./routes/member");
 const doctorRoutes = require("./routes/doctor");
 const medicineRoutes = require("./routes/medicine");
 const diagnoloticsRoutes = require("./routes/diagnolotic");
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(memberRoutes);
 app.use(doctorRoutes);
 app.use(medicineRoutes);
 app.use(diagnoloticsRoutes);
