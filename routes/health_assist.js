@@ -9,5 +9,9 @@ router.get(
   healthAssistController.getPhysiotherapySpecialities
 );
 router.get("/healthassist/insurances", healthAssistController.getInsurances);
+router.get(
+  "/healthassist/treatment&medicines",
+  healthAssistController.getTreatmentMedicines
+);
 
 module.exports = router;

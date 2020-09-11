@@ -1,5 +1,6 @@
 const PhysiotherapySpeciality = require("../models/physiotherapy_speciality");
 const Insurance = require("../models/insurance");
+const TreatmentMedicine = require("../models/treatment_medicine");
 const Order = require("../models/order");
 
 exports.bookHealthAssist = (req, res, next) => {
@@ -49,5 +50,13 @@ exports.getPhysiotherapySpecialities = (req, res, next) => {
 exports.getInsurances = (req, res, next) => {
   Insurance.find()
     .then((insurancesList) => res.status(200).json(insurancesList))
+    .catch((err) => console.log(err));
+};
+
+exports.getTreatmentMedicines = (req, res, next) => {
+  TreatmentMedicine.find()
+    .then((treatmentMedicinesList) =>
+      res.status(200).json(treatmentMedicinesList)
+    )
     .catch((err) => console.log(err));
 };
