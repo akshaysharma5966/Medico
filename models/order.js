@@ -7,10 +7,6 @@ const doctorOrder = new Schema(
       type: String,
       required: true,
     },
-    bookedAt: {
-      type: Date,
-      required: true,
-    },
   },
   { timestamps: true }
 );
@@ -22,10 +18,6 @@ const healthAssistOrder = new Schema(
     },
     type: {
       type: String,
-      required: true,
-    },
-    bookedAt: {
-      type: Date,
       required: true,
     },
   },

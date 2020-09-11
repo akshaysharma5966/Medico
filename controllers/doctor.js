@@ -23,7 +23,6 @@ exports.bookDoctor = (req, res, next) => {
             $push: {
               doctors: {
                 id: doctor._id,
-                bookedAt: new Date(),
               },
             },
           },

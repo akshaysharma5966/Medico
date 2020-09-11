@@ -20,7 +20,6 @@ exports.bookHealthAssist = (req, res, next) => {
       $push: {
         healthAssists: {
           id: id,
-          bookedAt: new Date(),
           type: type,
         },
       },
