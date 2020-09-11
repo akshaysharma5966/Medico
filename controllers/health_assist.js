@@ -1,6 +1,7 @@
+const PhysiotherapySpeciality = require("../models/physiotherapy_speciality");
 const Order = require("../models/order");
 
-exports.bookHealthAssist = (req, res, next) => {
+exports.bookHomeHealthCare = (req, res, next) => {
   let id;
   const type = req.query.type.toString().toLowerCase();
   if (type === "Physiotherapy".toLowerCase()) {
@@ -32,6 +33,37 @@ exports.bookHealthAssist = (req, res, next) => {
       res.status(200).json({
         message:
           "Health Assist has been booked with id:\n" +
+          order.healthAssists[order.healthAssists.length - 1]._id,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getPhysiotherapySpecialities = (req, res, next) => {
+  PhysiotherapySpeciality.find()
+    .then((specialities) => res.status(200).json(specialities))
+    .catch((err) => console.log(err));
+};
+
+exports.bookPhysiotherapy = (req, res, next) => {
+  Order.findOneAndUpdate(
+    {
+      userId: req.query.userId,
+    },
+    {
+      $push: {
+        healthAssists: {
+          id: req.query.id,
+          type: req.query.type,
+        },
+      },
+    },
+    { upsert: true, new: true }
+  )
+    .then((order) => {
+      res.status(200).json({
+        message:
+          "Physiotherapy has been booked with id:\n" +
           order.healthAssists[order.healthAssists.length - 1]._id,
       });
     })
