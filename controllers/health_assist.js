@@ -11,6 +11,8 @@ exports.bookHealthAssist = (req, res, next) => {
     id = 2;
   } else if (type === "Aaya".toLowerCase()) {
     id = 3;
+  } else {
+    id = req.query.id;
   }
   Order.findOneAndUpdate(
     {

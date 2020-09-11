@@ -3,6 +3,6 @@ const router = express.Router();
 
 const healthAssistController = require("../controllers/health_assist");
 
-router.post("/bookHealthAssist", healthAssistController.bookHealthAssist);
+router.post("/healthassist/book", healthAssistController.bookHealthAssist);
 
 module.exports = router;
