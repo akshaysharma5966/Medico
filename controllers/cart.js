@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Cart = require("../models/cart");
 const Medicine = require("../models/medicine");
-const Diagnolotic = require("../models/diagnolotic");
+const Diagnolotic = require("../models/diagnostic");
 const Order = require("../models/order");
 const { response } = require("express");
 

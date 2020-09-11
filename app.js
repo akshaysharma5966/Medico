@@ -7,7 +7,7 @@ const multer = require("multer");
 const memberRoutes = require("./routes/member");
 const doctorRoutes = require("./routes/doctor");
 const medicineRoutes = require("./routes/medicine");
-const diagnoloticsRoutes = require("./routes/diagnolotic");
+const diagnoloticsRoutes = require("./routes/diagnostic");
 const cartRoutes = require("./routes/cart");
 const healthAssistRoutes = require("./routes/health_assist");
 
