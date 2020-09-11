@@ -4,6 +4,7 @@ const Cart = require("../models/cart");
 const Medicine = require("../models/medicine");
 const Diagnolotic = require("../models/diagnolotic");
 const Order = require("../models/order");
+const { response } = require("express");
 
 exports.getCartItems = (req, res, next) => {
   Cart.findOne()
@@ -121,6 +122,28 @@ exports.checkout = (req, res, next) => {
       } else {
         res.status(200).json({ message: "No items in cart to checkout." });
       }
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.getOrders = (req, res, next) => {
+  Order.findOne({
+    userId: req.query.userId,
+  })
+    .then((order) => {
+      let response = [];
+      if (order) {
+        if (order.doctors && order.healthAssists)
+          response = [...order.doctors, ...order.healthAssists].sort(function (
+            a,
+            b
+          ) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          });
+        else if (order.doctors) response = [...order.doctors];
+        else if (order.healthAssists) response = [...order.healthAssists];
+      }
+      res.status(200).json(response);
     })
     .catch((err) => console.log(err));
 };

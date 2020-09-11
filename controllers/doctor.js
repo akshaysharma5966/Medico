@@ -23,6 +23,7 @@ exports.bookDoctor = (req, res, next) => {
             $push: {
               doctors: {
                 id: doctor._id,
+                type: "Doctor",
               },
             },
           },
