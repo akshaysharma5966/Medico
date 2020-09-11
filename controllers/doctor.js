@@ -22,8 +22,8 @@ exports.bookDoctor = (req, res, next) => {
           {
             $push: {
               doctors: {
-                doctorId: doctor._id,
-                bookedAt: req.query.bookedAt,
+                id: doctor._id,
+                bookedAt: new Date(),
               },
             },
           },

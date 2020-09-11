@@ -9,6 +9,7 @@ const doctorRoutes = require("./routes/doctor");
 const medicineRoutes = require("./routes/medicine");
 const diagnoloticsRoutes = require("./routes/diagnolotic");
 const cartRoutes = require("./routes/cart");
+const healthAssistRoutes = require("./routes/health_assist");
 
 const app = express();
 const fileStorage = multer.diskStorage({
@@ -42,6 +43,7 @@ app.use(doctorRoutes);
 app.use(medicineRoutes);
 app.use(diagnoloticsRoutes);
 app.use(cartRoutes);
+app.use(healthAssistRoutes);
 
 mongoose
   .connect(

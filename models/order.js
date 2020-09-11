@@ -3,13 +3,29 @@ const Schema = mongoose.Schema;
 
 const doctorOrder = new Schema(
   {
-    doctorId: {
+    id: {
       type: String,
       required: true,
     },
     bookedAt: {
       type: Date,
-      set: (d) => new Date(d * 1000),
+      required: true,
+    },
+  },
+  { timestamps: true }
+);
+
+const healthAssistOrder = new Schema(
+  {
+    id: {
+      type: String,
+    },
+    type: {
+      type: String,
+      required: true,
+    },
+    bookedAt: {
+      type: Date,
       required: true,
     },
   },
@@ -27,6 +43,7 @@ const order = new Schema(
       required: true,
     },
     doctors: [doctorOrder],
+    healthAssists: [healthAssistOrder],
   },
   { timestamps: true }
 );
