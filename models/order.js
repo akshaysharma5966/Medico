@@ -19,6 +19,9 @@ const subOrder = new Schema(
       type: String,
       required: true,
     },
+    bookedAt: {
+      type: Date,
+    },
   },
   { timestamps: true }
 );

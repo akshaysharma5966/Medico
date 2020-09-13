@@ -23,7 +23,10 @@ exports.bookDoctor = (req, res, next) => {
             $push: {
               doctors: {
                 id: doctor._id,
+                name: doctor.name,
+                price: doctor.price,
                 type: "Doctor",
+                bookedAt: new Date(parseInt(req.query.bookedAt)),
               },
             },
           },

@@ -205,3 +205,17 @@ exports.getOrders = (req, res, next) => {
     })
     .catch((err) => console.log(err));
 };
+
+exports.getDoctorAppoinments = (req, res, next) => {
+  Order.findOne()
+    .where("userId")
+    .equals(req.query.userId)
+    .then((order) => {
+      let response = [];
+      if (order.doctors) {
+        response = [...order.doctors];
+      }
+      res.status(200).json(response);
+    })
+    .catch((err) => console.log(err));
+};

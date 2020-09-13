@@ -9,5 +9,6 @@ router.post("/cart/checkout", cartCotroller.checkout);
 router.delete("/cart", cartCotroller.removeItemFromCart);
 router.delete("/cart/clear", cartCotroller.clearCart);
 router.get("/cart/orders", cartCotroller.getOrders);
+router.get("/cart/appointments", cartCotroller.getDoctorAppoinments);
 
 module.exports = router;
