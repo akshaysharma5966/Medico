@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 
 const Cart = require("../models/cart");
 const Medicine = require("../models/medicine");
-const Diagnolotic = require("../models/diagnostic");
+const Diagnostic = require("../models/diagnostic");
 const Order = require("../models/order");
-const { response } = require("express");
 
 exports.getCartItems = (req, res, next) => {
   Cart.findOne()
@@ -13,34 +12,37 @@ exports.getCartItems = (req, res, next) => {
     .then(async (items) => {
       if (items) {
         const temp = items.cart.map((item) => {
-          return { itemId: item.itemId, itemType: item.itemType };
+          return {
+            id: item.id,
+            type: item.type,
+          };
         });
         const cartItems = {};
         const medicines = [];
-        const diagnolotics = [];
+        const diagnostics = [];
         await Promise.all(
           temp.map(async (element) => {
-            if (element.itemType.toUpperCase() == "Medicine".toUpperCase()) {
+            if (element.type.toUpperCase() == "Medicine".toUpperCase()) {
               const medicine = await Medicine.findOne()
                 .where("_id")
-                .equals(element.itemId);
+                .equals(element.id);
               if (medicine) {
                 medicines.push(medicine);
               }
             } else if (
-              element.itemType.toUpperCase() == "Diagnolotic".toUpperCase()
+              element.type.toUpperCase() == "Diagnostic".toUpperCase()
             ) {
-              const diagnolotic = await Diagnolotic.findOne()
+              const diagnostic = await Diagnostic.findOne()
                 .where("_id")
-                .equals(element.itemId);
-              if (diagnolotic) {
-                diagnolotics.push(diagnolotic);
+                .equals(element.id);
+              if (diagnostic) {
+                diagnostics.push(diagnostic);
               }
             }
           })
         );
         cartItems.medicines = medicines;
-        cartItems.diagnolotics = diagnolotics;
+        cartItems.diagnostics = diagnostics;
         res.status(200).json(cartItems);
       } else {
         res.status(200).json({});
@@ -52,8 +54,8 @@ exports.getCartItems = (req, res, next) => {
 exports.addItemToCart = (req, res, next) => {
   const userId = req.body.userId;
   const itemToAdd = {
-    itemId: req.body.itemId,
-    itemType: req.body.itemType,
+    id: req.body.id,
+    type: req.body.type,
   };
   Cart.findOneAndUpdate(
     {
@@ -94,29 +96,71 @@ exports.clearCart = (req, res, next) => {
 
 exports.checkout = (req, res, next) => {
   const userId = req.query.userId;
-  const temp = Date.now();
-  const currDate = "items." + temp;
+  const currDate = new Date();
   Cart.findOne()
     .where("userId")
     .equals(userId)
-    .then((items) => {
-      if (items) {
+    .then(async (items) => {
+      const orderId = mongoose.Types.ObjectId(Math.floor(currDate / 1000));
+      const temp = items.cart.map((item) => {
+        return {
+          id: item.id,
+          type: item.type,
+        };
+      });
+
+      const fullItems = [];
+      await Promise.all(
+        temp.map(async (element) => {
+          if (element.type.toUpperCase() == "Medicine".toUpperCase()) {
+            const medicine = await Medicine.findOne()
+              .where("_id")
+              .equals(element.id);
+            if (medicine) {
+              fullItems.push({
+                _id: orderId,
+                id: medicine._id,
+                name: medicine.drugName,
+                price: medicine.price,
+                type: "Medicine",
+                createdAt: currDate,
+              });
+            }
+          } else if (element.type.toUpperCase() == "Diagnostic".toUpperCase()) {
+            const diagnostic = await Diagnostic.findOne()
+              .where("_id")
+              .equals(element.id);
+            if (diagnostic) {
+              fullItems.push({
+                _id: orderId,
+                id: diagnostic._id,
+                name: diagnostic.name,
+                price: diagnostic.rate,
+                type: "Diagnosic",
+                createdAt: currDate,
+              });
+            }
+          }
+        })
+      );
+
+      if (fullItems.length > 0) {
         Order.findOneAndUpdate(
           {
             userId: userId,
           },
           {
-            $set: {
-              [currDate]: { ...items.cart, prescription: req.file.path },
+            $push: {
+              items: { ...fullItems, prescription: req.file.path },
             },
           },
           { upsert: true }
         )
           .then(async (_) => {
             await this.clearCart(req, null, next);
-            res
-              .status(200)
-              .json({ message: "Order has been placed with id:\n" + temp });
+            res.status(200).json({
+              message: "Order has been placed with id:\n" + orderId,
+            });
           })
           .catch((err) => console.log(err));
       } else {
@@ -132,16 +176,30 @@ exports.getOrders = (req, res, next) => {
   })
     .then((order) => {
       let response = [];
+      const items = [];
       if (order) {
-        if (order.doctors && order.healthAssists)
-          response = [...order.doctors, ...order.healthAssists].sort(function (
-            a,
-            b
-          ) {
+        if (order.items && order.healthAssists) {
+          order.items.forEach((item) => {
+            for (let key in item) {
+              if (key !== "prescription") {
+                items.push(item[key]);
+              }
+            }
+          });
+          response = [...items, ...order.healthAssists].sort(function (a, b) {
             return new Date(b.createdAt) - new Date(a.createdAt);
           });
-        else if (order.doctors) response = [...order.doctors];
-        else if (order.healthAssists) response = [...order.healthAssists];
+        } else if (order.healthAssists) response = [...order.healthAssists];
+        else if (order.items) {
+          order.items.forEach((item) => {
+            for (let key in item) {
+              if (key !== "prescription") {
+                items.push(item[key]);
+              }
+            }
+          });
+          response = [...items];
+        }
       }
       res.status(200).json(response);
     })

@@ -1,24 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const doctorOrder = new Schema(
+const subOrder = new Schema(
   {
     id: {
       type: String,
       required: true,
     },
-    type: {
+    name: {
       type: String,
       required: true,
     },
-  },
-  { timestamps: true }
-);
-
-const healthAssistOrder = new Schema(
-  {
-    id: {
+    price: {
       type: String,
+      required: true,
     },
     type: {
       type: String,
@@ -35,11 +30,11 @@ const order = new Schema(
       required: true,
     },
     items: {
-      type: Map,
+      type: Array,
       required: true,
     },
-    doctors: [doctorOrder],
-    healthAssists: [healthAssistOrder],
+    doctors: [subOrder],
+    healthAssists: [subOrder],
   },
   { timestamps: true }
 );

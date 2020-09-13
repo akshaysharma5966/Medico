@@ -2,15 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const items = new Schema({
-  itemId: {
+  id: {
     type: Schema.ObjectId,
     required: true,
   },
-  quantity: {
-    type: Number,
-    default: 0,
-  },
-  itemType: {
+  type: {
     type: String,
     required: true,
   },
