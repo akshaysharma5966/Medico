@@ -48,11 +48,11 @@ const memberSchema = new Schema(
       required: true,
     },
     groupId: {
-      type: Number,
+      type: String,
       required: true,
     },
     relation: {
-      type: Number,
+      type: String,
       required: true,
     },
     email: {
@@ -60,15 +60,15 @@ const memberSchema = new Schema(
       required: true,
     },
     renewalFlag: {
-      type: Number,
+      type: String,
       required: true,
     },
     activeFlag: {
-      type: Number,
+      type: String,
       required: true,
     },
     activePlanId: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
