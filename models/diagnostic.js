@@ -19,6 +19,50 @@ const diagnostic = new Schema(
       type: Number,
       required: true,
     },
+    pmhRate: {
+      type: String,
+      required: true,
+    },
+    homeTestFlag: {
+      type: String,
+      required: true,
+    },
+    fastingFlag: {
+      type: String,
+      required: true,
+    },
+    bloodQuantityRequired: {
+      type: String,
+      required: true,
+    },
+    testResults: {
+      type: String,
+      required: true,
+    },
+    detailedDescription: {
+      type: String,
+      required: true,
+    },
+    diseaseListForWhichTheseTestIsConducted: {
+      type: String,
+      required: true,
+    },
+    minAge: {
+      type: Number,
+      required: true,
+    },
+    maxAge: {
+      type: Number,
+      required: true,
+    },
+    needDocPrescriptionFlag: {
+      type: String,
+      required: true,
+    },
+    testType: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
